@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Typography, CardContent} from "@material-ui/core";
+import { Card, Typography, CardContent } from "@material-ui/core";
 
 import './index.css';
 
@@ -8,7 +8,7 @@ const Result = ({ result }) => {
     return null;
   }
 
-  const { documentTitle, issues, pageUrl, img } = result;
+  const { documentTitle, issues, pageUrl, img, KPI } = result;
 
   return (
       <div className="result">
@@ -32,6 +32,30 @@ const Result = ({ result }) => {
           <img src={img} alt="screenshot site" height="200px"/>
         </div>
 
+        <div className="result-container">
+          {KPI.values.map(({ name, result, count }) =>
+              <Card>
+                <CardContent>
+                  <Typography color={result !== count ? "error" : "primary"}>
+                    {name}
+                  </Typography>
+                  <Typography color="textSecondary" style={{textAlign: 'center'}}>
+                    {result} / {count}
+                  </Typography>
+                </CardContent>
+              </Card>
+          )}
+          <Card className="result-item">
+            <CardContent>
+              <Typography color="primary">
+                Результат
+              </Typography>
+              <Typography color="textSecondary" style={{textAlign: 'center'}}>
+                {KPI.result.toFixed(2)}% / {100}%
+              </Typography>
+            </CardContent>
+          </Card>
+        </div>
 
         {issues.map((issue) =>
             <Card style={{marginBottom: '10px'}}>
@@ -49,7 +73,6 @@ const Result = ({ result }) => {
             </Card>
         )}
       </div>
-
   );
 };
 

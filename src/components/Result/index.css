@@ -8,4 +8,24 @@ h2 {
 
 .head {
     display: flex;
+    justify-content: space-between;
+
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.head img {
+    margin-right: 20px;
+}
+
+.result-container {
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.result-container .result-item {
+    justify-self: flex-end;
 }

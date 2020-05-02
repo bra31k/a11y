@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Container } from '@material-ui/core';
 
 import Search from "./components/Search";
@@ -9,7 +9,7 @@ const App = () => {
   const [result, setResult] = useState(null);
 
   const onClickSearch = async () => {
-    const response = await fetch(`http://127.0.0.1:3000/check?url=${url}`);
+    const response = await fetch(`http://127.0.0.1:5000/check?url=${url}`);
 
     const result = await response.json();
 
