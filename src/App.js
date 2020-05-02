@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import { Container } from '@material-ui/core';
 
-function App() {
+import Search from "./components/Search";
+import Result from "./components/Result";
+
+const App = () => {
+  const [url, setUrl] = useState('');
+  const [result, setResult] = useState(null);
+
+  const onClickSearch = async () => {
+    const response = await fetch(`http://127.0.0.1:3000/check?url=${url}`);
+
+    const result = await response.json();
+
+    setResult(result);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Container maxWidth="md">
+        <Search
+            onClick={onClickSearch}
+            value={url}
+            onChange={event => setUrl(event.target.value)}
+        />
+        <Result result={result}/>
+      </Container>
   );
-}
+};
 
 export default App;
