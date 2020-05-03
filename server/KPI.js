@@ -7,19 +7,53 @@ const principlesCountItems = {
   Principle4: { name: 'Надежность ', count: 9, ratio: 0.2, result: 9 },
 };
 
+const points = {
+  Principle1: {
+    Guideline1_1: 18,
+    Guideline1_2: 5,
+    Guideline1_3: 39,
+    Guideline1_4: 10,
+  },
+  Principle2: {
+    Guideline2_1: 7,
+    Guideline2_2: 5,
+    Guideline2_3: 1,
+    Guideline3_4: 14,
+  },
+  Principle3: {
+    Guideline3_1: 6,
+    Guideline3_2: 4,
+    Guideline3_3: 4,
+  },
+  Principle4: {
+    Guideline4_1: 9,
+  }
+};
+
 function KPI(issues){
-  const principles = cloneDeep(principlesCountItems);
+  const principles = { ...cloneDeep(principlesCountItems) };
+  const deletedPoints = [];
 
   issues.forEach(({ code }) => {
-    const [_,principle] = code.split('.');
+    const [_, principle, subPrinciple] = code.split('.');
 
-    principles[principle].result = principles[principle].result - 1;
+    if (!deletedPoints.includes(code)) {
+      principles[principle].result = principles[principle].result - 1;
+      deletedPoints.push(code);
+
+      if (points[principle][subPrinciple]) {
+        delete points[principle][subPrinciple];
+      }
+    }
   });
 
   const values = Object.values(principles).map(value => value);
 
-  const result = values.reduce((percent, { result, count, ratio }) => {
-    percent += (100 / count * result) * ratio;
+  const result = Object.keys(points).reduce((percent, principle) => {
+    const { count, ratio } = principlesCountItems[principle];
+    const sum = Object.values(points[principle]).reduce((sum, value) => sum += value, 0);
+
+    percent += (100 / count * sum) * ratio;
 
     return percent;
   }, 0);
